@@ -1,6 +1,3 @@
-//text to be displayed
-var displayText;
-
 // declare a varible that is going to hold our KorgNano object.
 let b;
 
@@ -19,16 +16,9 @@ let speed = 0.01;
 let sqr;
 
 function setup() {
-  b = new KorgNano("nanoKONTROL2");
-
-  sqr = new GradientSquare(20);
-
-  //400 by 400 pixel canvas
   createCanvas(400, 400);
-
-  //starting text
-  displayText = "Nothing received";
-
+  b = new KorgNano("nanoKONTROL2");
+  sqr = new GradientSquare(20);
   // assign colors to p5 color objects
   c1 = color("#40c9ff");
   c2 = color("#e81cff");
@@ -57,16 +47,6 @@ function draw() {
 
   sqr.update(c5, c6);
   sqr.display();
-
-  //Displaying text
-  //Little bit under the box above
-  //Changes the text when a number 64 MIDI note is on and off
-  push();
-  fill(0);
-  textAlign(CENTER);
-  textSize(20);
-  text(displayText, width / 2, 350);
-  pop();
 }
 
 class GradientSquare {

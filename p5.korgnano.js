@@ -80,7 +80,6 @@ class KorgNano {
 
       // Listen to control change message on all channels
       inputSoftware.addListener("controlchange", "all", function (e) {
-        displayText = e.data[1] + " " + e.data[2];
         freshMIDI = [e.data[1], e.data[2]];
         ref.update();
       });
