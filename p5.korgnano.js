@@ -50,7 +50,6 @@ class KorgNano {
     } else if (n >= 64 && n <= 71) {
       this.r[n - 64] = v;
     }
-    console.log(this);
   }
   init(ref) {
     WebMidi.enable(function (err) {

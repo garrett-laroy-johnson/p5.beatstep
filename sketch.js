@@ -1,6 +1,3 @@
-//color of a square
-var squareColor;
-
 //text to be displayed
 var displayText;
 
@@ -13,9 +10,6 @@ let c2; // will hold color2
 let c3; //will hold color3
 let c4; // will hold color4
 
-let x;
-let y;
-
 let r = 30;
 
 let angle = 0.0;
@@ -26,29 +20,20 @@ let sqr;
 
 function setup() {
   b = new KorgNano("nanoKONTROL2");
-  sqr = new GradientSquare();
+
+  sqr = new GradientSquare(20);
 
   //400 by 400 pixel canvas
   createCanvas(400, 400);
-
-  //starting background color
-  bgColor = color(220, 220, 200);
-
-  //starting square color
-  squareColor = color(100);
 
   //starting text
   displayText = "Nothing received";
 
   // assign colors to p5 color objects
   c1 = color("#40c9ff");
-  console.log(c1);
   c2 = color("#e81cff");
   c3 = color("#bf0fff");
   c4 = color("#cbff49");
-
-  x = width / 2;
-  y = height / 2;
 }
 
 function draw() {
@@ -68,36 +53,24 @@ function draw() {
     line(x, 0, x, height);
   }
 
-  //Drawing a rectangle, with no outline,
-  //Middle of the screen (width and height divided by two)
-  //Changes
-  fill(squareColor);
-  noStroke();
+  // update square
 
-  rect(x, y, width / 2, height / 2);
-
-  x = sin(angle) * r;
-  y = cos(angle) * r;
-
-  angle += speed;
-
-  // update r and speed according to midi fader controls
-  r = faders[0];
-  speed = faders[1] * 0.001;
+  sqr.update(c5, c6);
+  sqr.display();
 
   //Displaying text
   //Little bit under the box above
   //Changes the text when a number 64 MIDI note is on and off
+  push();
   fill(0);
   textAlign(CENTER);
   textSize(20);
   text(displayText, width / 2, 350);
+  pop();
 }
 
 class GradientSquare {
-  constructor() {
-    this.x = x; // left most line
-    this.y = y; // topmost line
+  constructor(w) {
     this.w = w; // width of rect
     this.c1; //
     this.c2;
@@ -105,12 +78,17 @@ class GradientSquare {
   update(c1, c2) {
     this.c1 = c1;
     this.c2 = c2;
+    this.w = map(b.dials[0], 0, 127, 0, width);
   }
   display() {
+    let yOffset = height / 2 - this.w / 2;
+    let xOffset = width / 2 - this.w / 2;
     for (let x = 0; x < this.w; x++) {
-      let col = lerpColor(this.c2, this.c1, x);
+      let o = (width - this.w) / width / 2;
+      let i = x / this.w;
+      let col = lerpColor(this.c2, this.c1, i);
       stroke(col);
-      line(this.x + x, this.y, this.x + x, this.y + this.w);
+      line(xOffset + x, yOffset, xOffset + x, yOffset + this.w);
     }
   }
 }
