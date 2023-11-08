@@ -24,6 +24,7 @@ class BeatStep {
     this.device = type;
     this.init(this);
     this.dials = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.notesOn = [];
     this.play = 0;
     this.record = 0;
     this.stop = 0;
@@ -51,9 +52,11 @@ class BeatStep {
   }
   initDom() {
     this.dialsDom = createP("");
+    this.notes = createP("");
   }
   display() {
     this.dialsDom.html("dials = " + this.dials);
+    //  this.dialsDom.html("notes on = " + this.notesOn);
   }
   init(ref) {
     WebMidi.enable(function (err) {
@@ -88,7 +91,9 @@ class BeatStep {
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("controlchange", "all", function (e) {
           ref.ctrl = e;
-          console.log(e.data);
+          if (ref.print) {
+            console.log(e.data);
+          }
           ref.updateCtrl(e.data);
           ref.display();
         });
