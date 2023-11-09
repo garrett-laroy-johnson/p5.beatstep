@@ -6,8 +6,10 @@ function setup() {
   createCanvas(1200, 300);
   noStroke();
   polySynth = new p5.PolySynth();
-  abs = new BeatStep("Arturia BeatStep");
+  abs = new BeatStep("MPK mini 3");
   abs.print = false; // switch to true to see data to console
+  abs.synth = true; // turns sound on or off
+  abs.synthVel = 0.2; // 0-1 velocity of synth
 }
 function draw() {
   background("black");
@@ -19,5 +21,8 @@ function draw() {
       circle(s / 2 + x * s, s / 2 + y * s, val);
       i++;
     }
+  }
+  if (abs.notesOn.length > 0) {
+    console.log(abs.notesOn);
   }
 }

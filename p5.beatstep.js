@@ -27,6 +27,7 @@ class BeatStep {
     this.notesOn = [];
     this.play = 0;
     this.record = 0;
+    this.print = true;
     this.stop = 0;
     this.ff = 0;
     this.rw = 0;
@@ -44,11 +45,6 @@ class BeatStep {
   updateSeq(data) {
     let n = data[1];
     let v = data[2];
-    // for (let i = 0; i < 16; i++) {
-    //   if (n == Seq[i]) {
-    //     this.seq[i] = v;
-    //   }
-    // }
   }
   initDom() {
     this.dialsDom = createP("");
@@ -100,15 +96,27 @@ class BeatStep {
 
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("noteon", "all", function (e) {
-          console.log(e.note.identifier, "on", e.message.channel);
-          console.log(e);
-          // ref.updateSeq();
+          if (ref.print) {
+            console.log(e.note.identifier, "on", e.message.channel);
+          }
+          if (ref.synth) {
+            ref.notesOn.push(e.note.identifier);
+          }
+          polySynth.noteAttack(e.note.identifier, ref.synthVel);
         });
 
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("noteoff", "all", function (e) {
-          console.log(e.note.identifier, "off", e.message.channel);
-          // ref.updateSeq();
+          if (ref.print) {
+            console.log(e.note.identifier, "off", e.message.channel);
+          }
+          const match = (element) => element == e.noteIdentifier;
+          //  console.log(e.note.identifier);
+          let index = ref.notesOn.findIndex(match);
+          ref.notesOn.splice(index, 1);
+          if (ref.synth) {
+            polySynth.noteRelease(e.note.identifier, ref.synthVel);
+          }
         });
       });
 
