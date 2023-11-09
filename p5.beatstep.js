@@ -23,15 +23,25 @@ class BeatStep {
   constructor(type) {
     this.device = type;
     this.init(this);
+    this.avg = 33;
+    this.dialsHis = [];
+    this.dialsAvg = [];
+    this.encoder = 0;
     this.dials = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.notesOn = [];
     this.play = 0;
     this.record = 0;
-    this.print = true;
+    this.print = false;
     this.stop = 0;
     this.ff = 0;
     this.rw = 0;
+    this.initAvg();
     this.initDom();
+  }
+  initAvg() {
+    for (let i = 0; i < 16; i++) {
+      this.dialsHis[i] = new Array();
+    }
   }
   updateCtrl(data) {
     let n = data[1];
@@ -39,6 +49,26 @@ class BeatStep {
     for (let i = 0; i < 16; i++) {
       if (n == dialMap[i]) {
         this.dials[i] = v;
+      }
+    }
+    if (n == 7) {
+      this.encoder = v;
+    }
+  }
+  avgCtrl() {
+    if (this.avg > 1) {
+      for (let i = 0; i < 16; i++) {
+        this.dialsHis[i].push(this.dials[i]);
+        if (this.dialsHis[i].length >= this.avg) {
+          this.dialsHis[i].splice(0, 1);
+        }
+
+        let t = 0;
+        for (let s = 0; s < this.dialsHis[i].length; s++) {
+          t += this.dialsHis[i][s];
+        }
+        t /= this.dialsHis[i].length;
+        this.dialsAvg[i] = t;
       }
     }
   }
