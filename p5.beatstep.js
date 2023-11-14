@@ -18,7 +18,7 @@ function onEnabled() {
 
 // dial ctrl values as encoded into BeatStep firmware.
 dialMap = [10, 74, 71, 76, 77, 93, 73, 75, 114, 18, 19, 16, 17, 91, 79, 72];
-
+let padMap = [44, 45, 46, 47, 48, 49, 50, 51, 36, 37, 38, 39, 40, 41, 42, 43];
 class BeatStep {
   constructor(type) {
     this.device = type;
@@ -30,6 +30,7 @@ class BeatStep {
     this.dials = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.notesOn = [];
     this.MIDIon = [];
+    this.pads = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.play = 0;
     this.record = 0;
     this.print = false;
@@ -42,6 +43,15 @@ class BeatStep {
   initAvg() {
     for (let i = 0; i < 16; i++) {
       this.dialsHis[i] = new Array();
+    }
+  }
+  updatePad(data) {
+    let n = data[1];
+    let v = data[2];
+    for (let i = 0; i < 16; i++) {
+      if (n == padMap[i]) {
+        this.pads[i] = v;
+      }
     }
   }
   updateCtrl(data) {
@@ -128,6 +138,9 @@ class BeatStep {
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("noteon", "all", function (e) {
           ref.MIDIon.push(e.data[1]);
+          if (e.data[1] >= 36 && e.data[1] <= 50) {
+            ref.updatePad(e.data);
+          }
           ref.notesOn.push(e.note.identifier);
           if (ref.print) {
             console.log(e.note.identifier, "on", e.message.channel);

@@ -22,7 +22,7 @@ function draw() {
 
   w = abs.dialsAvg[3];
 
-  density = abs.encoder;
+  density = abs.encoder; //big dial in the top left
   spacing = width / density;
   let mult = map(abs.dialsAvg[2], 0, 127, 0, 100);
 
