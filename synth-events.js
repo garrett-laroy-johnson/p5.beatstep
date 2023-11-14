@@ -25,13 +25,15 @@ let abs;
 let w = [];
 
 let oldVals = [];
+let polySynth;
 
 function setup() {
   createCanvas(400, 400);
   background(0);
 
   abs = new BeatStep("Arturia BeatStep");
-
+  abs.synth = true; // turns synth on;
+  polySynth = new p5.PolySynth(); // creates new Synth Object thru p5 sound library
   for (let i = 0; i < 16; i++) {
     let c = random(colorPal);
     colors.push(c);
@@ -48,13 +50,6 @@ function setup() {
 
 function draw() {
   background(0);
-  // checck to see if history of values are the same incoming values. if they are different, pass that on as a new width information
-  for (let i = 0; i < 16; i++) {
-    if (oldVals[i] !== abs.pads[i]) {
-      w[i] = abs.pads[i];
-    }
-    oldVals[i] = abs.pads[i];
-  }
 
   for (let i = 0; i < 16; i++) {
     fill(colors[i]);

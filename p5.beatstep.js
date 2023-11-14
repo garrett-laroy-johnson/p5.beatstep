@@ -32,11 +32,9 @@ class BeatStep {
     this.MIDIon = [];
     this.pads = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.play = 0;
-    this.record = 0;
+    this.synth = false;
     this.print = false;
     this.stop = 0;
-    this.ff = 0;
-    this.rw = 0;
     this.initAvg();
     this.initDom();
   }

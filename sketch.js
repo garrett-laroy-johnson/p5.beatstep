@@ -1,11 +1,9 @@
 let s = 0;
 let abs;
-//let polySynth;
 
 function setup() {
   createCanvas(600, 150);
   noStroke();
-  //polySynth = new p5.PolySynth();
   abs = new BeatStep("Arturia BeatStep");
 }
 function draw() {
