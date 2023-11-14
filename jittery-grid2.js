@@ -9,7 +9,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   //polySynth = new p5.PolySynth();
   abs = new BeatStep("Arturia BeatStep");
-  abs.avg = 99; // number of frames over which to average MIDI input. higher = smoother, lower = more sudden
+  abs.avg = 33; // number of frames over which to average MIDI input. higher = smoother, lower = more sudden
   strokeWeight(4);
   //frameRate(10);
   noStroke();

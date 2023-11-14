@@ -29,6 +29,7 @@ class BeatStep {
     this.encoder = 0;
     this.dials = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.notesOn = [];
+    this.MIDIon = [];
     this.play = 0;
     this.record = 0;
     this.print = false;
@@ -126,27 +127,35 @@ class BeatStep {
 
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("noteon", "all", function (e) {
+          ref.MIDIon.push(e.data[1]);
+          ref.notesOn.push(e.note.identifier);
           if (ref.print) {
             console.log(e.note.identifier, "on", e.message.channel);
+            console.log(e.data[1], "on");
           }
           if (ref.synth) {
-            ref.notesOn.push(e.note.identifier);
+            polySynth.noteAttack(e.note.identifier, ref.synthVel);
           }
-          polySynth.noteAttack(e.note.identifier, ref.synthVel);
         });
 
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("noteoff", "all", function (e) {
           if (ref.print) {
             console.log(e.note.identifier, "off", e.message.channel);
+
+            console.log(e.data[1], "off");
           }
-          const match = (element) => element == e.noteIdentifier;
-          //  console.log(e.note.identifier);
+          let match = (element) => element == e.noteIdentifier;
           let index = ref.notesOn.findIndex(match);
           ref.notesOn.splice(index, 1);
+
           if (ref.synth) {
             polySynth.noteRelease(e.note.identifier, ref.synthVel);
           }
+
+          match = (element) => element == e.data[1];
+          index = ref.notesOn.findIndex(match);
+          ref.MIDIon.splice(index, 1);
         });
       });
 
