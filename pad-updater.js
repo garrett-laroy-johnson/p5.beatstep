@@ -22,10 +22,6 @@ let y = [];
 
 let abs;
 
-let w = [];
-
-let oldVals = [];
-
 function setup() {
   createCanvas(400, 400);
   background(0);
@@ -41,29 +37,16 @@ function setup() {
 
     let why = random(height);
     y.push(why);
-
-    w.push(100);
   }
 }
 
 function draw() {
+  console.log(abs.pads);
   background(0);
-  let event = false;
-  // checck to see if history of values are the same incoming values. if they are different, pass that on as a new width information
-  for (let i = 0; i < 16; i++) {
-    if (oldVals[i] !== abs.pads[i]) {
-      w[i] = abs.pads[i];
-      event = true;
-    }
-    oldVals[i] = abs.pads[i];
-  }
-  console.log(event);
-  for (let i = 0; i < 16; i++) {
-    fill(colors[i]);
-    circle(x[i], y[i], w[i]);
 
-    if (w[i] > 0) {
-      w[i]--;
-    }
+  for (let i = 0; i < 16; i++) {
+    let w = abs.pads[i];
+    fill(colors[i]);
+    circle(x[i], y[i], w);
   }
 }
