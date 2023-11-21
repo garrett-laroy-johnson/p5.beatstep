@@ -136,10 +136,11 @@ class BeatStep {
         // Listen to control change message on all channels
         ref.inputSoftware.addListener("noteon", "all", function (e) {
           ref.MIDIon.push(e.data[1]);
-          if (e.data[1] >= 36 && e.data[1] <= 50) {
+          ref.notesOn.push(e.note.identifier);
+          if (e.data[1] >= 36 && e.data[1] <= 51) {
             ref.updatePad(e.data);
           }
-          ref.notesOn.push(e.note.identifier);
+
           if (ref.print) {
             console.log(e.note.identifier, "on", e.message.channel);
             console.log(e.data[1], "on");

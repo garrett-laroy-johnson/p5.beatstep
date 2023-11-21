@@ -57,7 +57,7 @@ function draw() {
     }
     oldVals[i] = abs.pads[i];
   }
-  console.log(event);
+
   for (let i = 0; i < 16; i++) {
     fill(colors[i]);
     circle(x[i], y[i], w[i]);
