@@ -1,4 +1,4 @@
-# p5.korgnano.js
+# p5.beatstep.js
 
 this brief library provides JS Objects that listen for broadcast MIDI messages from KorgNano controllers. Currently korgNanoKontrol2 is supported.
 
